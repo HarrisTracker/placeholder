@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamala Harris Appearance Tracker</title>
+    <style>
+        /* Base Styling & Theme Variables */
+        :root {
+            --primary: #1b2a4a;
+            --accent: #b4975a;
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-muted: #666666;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding-bottom: 3rem;
+        }
+
+        /* Header Layout */
+        header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #d1d5db;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* View Toggle Switch Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active, .toggle-btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Core Web Container */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* VIEW ENGINE CONFIGURATIONS */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .layout-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* Structural Card Styling */
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Structural Variations Based on Layout Framework */
+        .layout-grid .card {
+            flex-direction: column;
+        }
+
+        .layout-list .card {
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        /* Image Optimization Sizing */
+        .layout-grid .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .layout-list .card-img {
+            width: 240px;
+            min-width: 240px;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Inside Text Fields */
+        .card-content {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .card-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            border-top: 1px solid #f3f4f6;
+            padding-top: 1rem;
+        }
+
+        /* Links and Action Buttons */
+        .btn {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2a3f6e;
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: var(--text);
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        /* Responsive Breakdowns for Mobile Phone Formats */
+        @media (max-width: 700px) {
+            header h1 { font-size: 1.8rem; }
+            
+            .layout-list .card {
+                flex-direction: column;
+            }
+            .layout-list .card-img {
+                width: 100%;
+                height: 180px;
+            }
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kamala Harris: Public Appearances</h1>
+        <p>Tracking speeches, book events, and public schedule from January 2025 – Present</p>
+        
+        <!-- Toggle Layout Switches -->
+        <div class="controls">
+            <button class="toggle-btn" id="grid-view-btn" onclick="setView('grid')">Grid View</button>
+            <button class="toggle-btn active" id="list-view-btn" onclick="setView('list')">List View</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Target dynamic array wrapper container -->
+        <div class="layout-list" id="event-display-wrapper">
+            <!-- Cards drop in here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // DATA ARRAY: Update text fields, links, and custom button text right here!
+        const eventsData = [
+            {
+                date: "May 7, 2026",
+                title: "Nevada Democratic Leadership Event",
+                description: "Spoke alongside Nevada party leaders in Las Vegas, addressing the current direction of national economic shifts and foreign relations frameworks.",
+                image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&auto=format&fit=crop&q=60",
+                coverageLink: "https://www.theguardian.com/us-news/live/2026/may/07/donald-trump-republicans-gop-electoral-map-redistricting-midterms-lula-executive-orders-latest-news-updates",
+                coverageLabel: "Read Guardian Summary",  // <-- Custom label for Button 1
+                videoLink: "https://www.youtube.com/watch?v=tu7IokrnVak",
+                videoLabel: "Watch Event Coverage"        // <-- Custom label for Button 2
+            },
+            {
+                date: "April 25, 2026",
+                title: "Keynote Address: Fisher Shackelford Dinner",
+                description: "Traveled to Little Rock, Arkansas to address state Democrats. Before the dinner, she stopped by the historic Little Rock Central High School to meet with civil rights landmark figure Elizabeth Eckford.",
+                image: "", 
+                coverageLink: "",
+                coverageLabel: "",                        // <-- Left blank, defaults to fallback
+                videoLink: "https://www.youtube.com/watch?v=2FR6SV_01S4",
+                videoLabel: "Watch Dinner Speech"         // <-- Custom label for Button 2
+            },
+            {
+                date: "April 21, 2026",
+                title: "Memoir Tour Conversation - Savannah, GA",
+                description: "Hosted an event at the Johnny Mercer Theatre on her extended national tour for '107 Days', emphasizing community dialogue and shared local focus points.",
+                image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=500&auto=format&fit=crop&q=60",
+                coverageLink: "https://www.ticketmaster.com/kamala-harris-tickets/artist/3889329",
+                coverageLabel: "View Audience Reviews",   // <-- Custom label for Button 1
+                videoLink: "",
+                videoLabel: ""
+            }
+        ];
+
+        // VIEW ENGINE SWITCHING FUNCTION
+        function setView(viewType) {
+            const wrapper = document.getElementById('event-display-wrapper');
+            const gridBtn = document.getElementById('grid-view-btn');
+            const listBtn = document.getElementById('list-view-btn');
+
+            if (viewType === 'grid') {
+                wrapper.className = 'layout-grid';
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                wrapper.className = 'layout-list';
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            }
+        }
+
+        // ELEMENT RENDER COMPONENT
+        function renderEvents() {
+            const container = document.getElementById('event-display-wrapper');
+            container.innerHTML = ''; 
+
+            eventsData.forEach(event => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Evaluate Image Space Allocation
+                let imgHtml = '';
+                if (event.image && event.image.trim() !== '') {
+                    imgHtml = `<img src="${event.image}" alt="${event.title}" class="card-img">`;
+                }
+
+                // Check Button Availability and Custom Strings
+                let buttonsHtml = '';
+                if (event.coverageLink) {
+                    const cLabel = event.coverageLabel && event.coverageLabel.trim() !== '' ? event.coverageLabel : "Read Coverage";
+                    buttonsHtml += `<a href="${event.coverageLink}" target="_blank" class="btn btn-primary">${cLabel}</a>`;
+                }
+                if (event.videoLink) {
+                    const vLabel = event.videoLabel && event.videoLabel.trim() !== '' ? event.videoLabel : "Watch Video";
+                    buttonsHtml += `<a href="${event.videoLink}" target="_blank" class="btn btn-secondary">${vLabel}</a>`;
+                }
+
+                card.innerHTML = `
+                    ${imgHtml}
+                    <div class="card-content">
+                        <div class="card-date">${event.date}</div>
+                        <h2 class="card-title">${event.title}</h2>
+                        <p class="card-desc">${event.description}</p>
+                        ${buttonsHtml ? `<div class="card-links">${buttonsHtml}</div>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Boot system scripts on load completion
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEvents();
+            setView('list'); // Default view setting on startup
+        });
+    </script>
+</body>
+</html>
