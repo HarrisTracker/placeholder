@@ -3,479 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamala Harris Appearance Tracker</title>
+    <title>Where is Kamala Harris? | Civic Archive</title>
+    
+    <!-- Google Fonts import for matching typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
     <style>
-        /* Base Styling & Theme Variables */
         :root {
-            --primary: #1b2a4a;
-            --accent: #b4975a;
-            --bg: #f4f6f9;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --text-muted: #666666;
+            --bg-main: #F4EFE6;         /* Creamy beige background */
+            --bg-card: #FAF8F5;         /* Lighter cream for cards */
+            --text-dark: #222222;       /* Charcoal header text */
+            --text-muted: #6B7280;      /* Muted gray subtext */
+            --accent-gold: #C89B65;     /* Warm tan/gold accent */
+            --border-subtle: #E2DBD0;   /* Delicate beige/gray borders */
+            
+            /* Typography */
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-display: 'Cinzel', serif;
+            --font-sans: 'Inter', system-ui, sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            font-family: var(--font-serif);
             line-height: 1.5;
-            padding-bottom: 3rem;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Header Layout */
-        header {
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-            border-bottom: 4px solid var(--accent);
+        /* HERO SECTION */
+        .hero {
+            padding: 4rem 8% 3rem 8%;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            align-items: start;
         }
 
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
+        .hero-subtitle {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 i {
+            font-style: italic;
+            color: var(--accent-gold);
+        }
+
+        .hero-description {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 520px;
+        }
+
+        /* AT A GLANCE CARD */
+        .at-a-glance {
+            border: 1px solid var(--border-subtle);
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .at-a-glance-title {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
             font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
         }
 
-        header p {
-            color: #d1d5db;
-            font-size: 1rem;
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            padding: 0.4rem 0;
+        }
+
+        .stat-label { color: var(--text-muted); }
+        .stat-value { font-weight: 500; color: var(--accent-gold); }
+
+        /* MAIN CONTENT AREA */
+        .content-area { padding: 0 8% 4rem 8%; }
+
+        /* FILTER TABS */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .filter-btn {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            padding: 0.5rem 0.9rem;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+            cursor: pointer;
+            color: var(--text-dark);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: #2D3748;
+            color: white;
+            border-color: #2D3748;
+        }
+
+        /* EVENT TIMELINE CARDS */
+        .event-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 2rem;
             margin-bottom: 1.5rem;
         }
 
-        /* View Toggle Switch Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .toggle-btn.active, .toggle-btn:hover {
-            background: var(--accent);
-            color: var(--primary);
-            border-color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Core Web Container */
-        .container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* VIEW ENGINE CONFIGURATIONS */
-        .layout-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .layout-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        /* Structural Card Styling */
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid #e5e7eb;
-            display: flex;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 12px rgba(0,0,0,0.08);
-        }
-
-        /* Structural Variations Based on Layout Framework */
-        .layout-grid .card {
-            flex-direction: column;
-        }
-
-        .layout-list .card {
-            flex-direction: row;
-            align-items: stretch;
-        }
-
-        /* Image Optimization Sizing */
-        .layout-grid .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .layout-list .card-img {
-            width: 240px;
-            min-width: 240px;
-            height: auto;
-            object-fit: cover;
-        }
-
-        /* Inside Text Fields */
-        .card-content {
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .card-date {
+        .event-date {
+            font-family: var(--font-sans);
             font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent);
+            color: var(--text-muted);
+            text-align: right;
+            padding-top: 1.5rem;
+        }
+
+        .event-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .event-img {
+            width: 100%;
+            height: 120px;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+            overflow: hidden;
         }
 
-        .card-title {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .card-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-            flex-grow: 1;
-        }
-
-        .card-links {
+        /* TAGS CONTAINER & STYLING */
+        .event-tags {
             display: flex;
-            gap: 0.75rem;
             flex-wrap: wrap;
-            border-top: 1px solid #f3f4f6;
-            padding-top: 1rem;
+            gap: 0.35rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* Links and Action Buttons */
-        .btn {
+        .event-tag {
             display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        .event-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-card p {
+            font-family: var(--font-sans);
             font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .event-footer {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .event-location {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .event-link {
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            text-decoration: underline;
             font-weight: 500;
-            text-decoration: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            transition: background 0.2s;
+            transition: color 0.2s;
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
+        .event-link:hover {
+            color: var(--accent-gold);
         }
 
-        .btn-primary:hover {
-            background-color: #2a3f6e;
+        /* FOOTER */
+        footer {
+            padding: 4rem 8%;
+            text-align: center;
+            border-top: 1px solid var(--border-subtle);
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
-        .btn-secondary {
-            background-color: #f3f4f6;
-            color: var(--text);
-            border: 1px solid #e5e7eb;
+        footer p.disclaimer {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 1rem;
         }
 
-        .btn-secondary:hover {
-            background-color: #e5e7eb;
-        }
-
-        /* Responsive Breakdowns for Mobile Phone Formats */
-        @media (max-width: 700px) {
-            header h1 { font-size: 1.8rem; }
-            
-            .layout-list .card {
-                flex-direction: column;
+        /* MOBILE & TABLET STYLES */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2.5rem 5% 2rem 5%;
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
-            .layout-list .card-img {
-                width: 100%;
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .content-area {
+                padding: 0 5% 3rem 5%;
+            }
+
+            /* Enable horizontal scroll on filter buttons */
+            .filters {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .filters::-webkit-scrollbar {
+                display: none; /* Hide scrollbar for clean UI */
+            }
+
+            /* Stack dates on top of event cards */
+            .event-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .event-date {
+                text-align: left;
+                padding-top: 0;
+                font-weight: 600;
+            }
+
+            /* Stack event images on top of card text */
+            .event-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1.25rem;
+            }
+
+            .event-img {
                 height: 180px;
             }
-            .layout-grid {
-                grid-template-columns: 1fr;
+
+            footer {
+                padding: 3rem 5%;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>"Where's Kamala?"</h1>
-        <p>Tracking speeches, book events, and public appearances from January 2025 – Present</p>
-        
-        <!-- Toggle Layout Switches -->
-        <div class="controls">
-            <button class="toggle-btn" id="grid-view-btn" onclick="setView('grid')">Grid View</button>
-            <button class="toggle-btn active" id="list-view-btn" onclick="setView('list')">List View</button>
+    <section class="hero">
+        <div>
+            <div class="hero-subtitle">A CIVIC RECORD / 01.20.25–PRESENT</div>
+            <h1>Where is <br><i>Kamala Harris?</i></h1>
+            <p class="hero-description">An archive of public appearances since her vice presidency — built for clarity and context.</p>
         </div>
-    </header>
 
-    <div class="container">
-        <!-- Target dynamic array wrapper container -->
-        <div class="layout-list" id="event-display-wrapper">
-            <!-- Cards drop in here dynamically -->
+        <div class="at-a-glance">
+            <div class="at-a-glance-title">
+                <span>AT A GLANCE</span>
+                <span>📊</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Total Appearances</span>
+                <span class="stat-value" id="stat-total">6</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Most Common Type</span>
+                <span class="stat-value">Speech</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Last Recorded</span>
+                <span class="stat-value" id="stat-last">August 13, 2026</span>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <main class="content-area">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterEvents('all')">All types</button>
+            <button class="filter-btn" onclick="filterEvents('Interview/Podcast')">Interview/Podcast</button>
+            <button class="filter-btn" onclick="filterEvents('Fireside Chat')">Fireside Chat</button>
+            <button class="filter-btn" onclick="filterEvents('Rally/Fundraiser')">Rally/Fundraiser</button>
+            <button class="filter-btn" onclick="filterEvents('Book Tour')">Book Tour</button>
+            <button class="filter-btn" onclick="filterEvents('Speech')">Speech</button>
+            <button class="filter-btn" onclick="filterEvents('Informal Visits')">Informal Visits</button>
+            <button class="filter-btn" onclick="filterEvents('Other')">Other</button>
+        </div>
+
+        <div id="events-container">
+            <!-- Events injected dynamically by JS -->
+        </div>
+    </main>
+
+    <footer>
+        <p>This is a public-records project that covers appearances reported after January 20, 2025 and is designed to grow as new events take place.</p>
+        <p class="disclaimer">This archive is not affiliated with Kamala Harris or any event organizer.</p>
+    </footer>
 
     <script>
-        // DATA ARRAY: Update text fields, links, and custom button text right here!
         const eventsData = [
             {
-                date: "June 19, 2026",
-                title: "The Don Lemon Show",
-                description: "Don sits down with former Vice President Kamala Harris for an unfiltered conversation about the state of the nation, the threats facing American democracy, and what's at stake in the years ahead. Harris doesn't hold back as she weighs in on the country's future, what Democrats need to do differently, and the growing dangers she sees on the horizon.",
-                image: "https://i.ibb.co/23T2s69T/Captura-de-pantalla-2026-06-22-183758.png",
-                coverageLink: "https://youtu.be/NtCee1K0kh4?si=FxuCkv3EsUyQKf3_",
-                coverageLabel: "Watch Episode",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
+                date: "Aug 13, 2026",
+                category: ["Interview/Podcast", "Fireside Chat"],
+                title: "Assembly Required with Stacey Abrams",
+                description: "VP Harris shares what she’s hearing from voters on the ground as she travels through the South. They also talk about the new attitude Democrats need to win elections, fight back against Trump, and stop his authoritarian agenda.",
+                location: "Online",
+                link: "https://www.youtube.com/watch?v=R6CNzUfVAmY", 
+                linkText: "Watch ↗",
+                image: "https://i.ibb.co/4Gd5z9V/Dise-o-sin-t-tulo.png",
             },
             {
-                date: "June 18, 2026 - Chicago, Illinois",
-                title: "The Obama Presidential Center Dedication Ceremony",
-                description: "Doug Emhoff and Kamala Harris attend the dedication ceremony for the opening of the Barack Obama Presidential Center, in John Lewis Plaza",
-                image: "https://i.ibb.co/233Hn9mG/HLHJlw-KWw-AEKJj-W.png",
-                coverageLink: "https://www.nprillinois.org/illinois/2026-06-18/a-home-for-hope-obama-presidential-center-christened-in-grand-opening-ceremony",
-                coverageLabel: "Read Recap",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
+                date: "Aug 12, 2026",
+                category: ["Rally/Fundraiser", "Other"],
+                title: "Women for Ossoff",
+                description: "VP Harris joined Senator Ossoff for a virtual gathering celebrating women’s civic engagement, leadership, and the issues shaping the lives of women across Georgia.",
+                location: "Online",
+                link: "https://x.com/archivekamala/status/2087674961901002967", 
+                linkText: "Source ↗",
+                image: "https://i.ibb.co/9DVXXzC/Dise-o-sin-t-tulo.png",
             },
             {
-                date: "June 16, 2026 - Vienna, Austria",
-                title: "Austrian World Summit 2026",
-                description: "Kamala Harris joined Arnold Schwarzenegger for the 10th annual Austrian World Summit. Speaking at the Hofburg, Harris participated in a fireside chat focused on nonpartisan climate advocacy, while also addressing global policy challenges including AI data centers, financial stability, and international conflicts.",
-                image: "https://i.ibb.co/n8w99ZP9/HK7-YVMQW0-AEJy3-H.jpg",
-                coverageLink: "https://www.youtube.com/watch?v=_x42NA-s400&t=1243s",
-                coverageLabel: "Watch Full Fireside Chat",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            }, 
-            {
-                date: "June 14, 2026 - West Hollywood, California",
-                title: "The Abbey Food & Bar",
-                description: "Kamala Harris and her husband, Doug Emhoff, made a surprise visit to The Abbey, an iconic gay bar, and greeted stunned guests.",
-                image: "https://i.ibb.co/1tNYbWmf/u200bkamala-harris-and-doug-emhoff-stopped-by-the-abbey-on-june-13.avif",
-                coverageLink: "https://www.out.com/politics/kamala-harris-pride-the-abbey?utm_campaign=mrf-twitter-outmagazine&utm_source=twitter&utm_medium=social&mrfcid=202606146a2bf4c0277ce2137ebc6d4f",
-                coverageLabel: "Read Recap",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
+                date: "Apr 30, 2025",
+                category: ["Informal Visits"],
+                title: "Private leadership gathering",
+                description: "An informal discussion with community leaders regarding regional economic priorities.",
+                location: "San Francisco, CA",
+                link: "",
+                linkText: "",
+                image: false
             },
             {
-                date: "June 3, 2026 - Minnesota",
-                title: "St. Paul Central High School’s Graduation",
-                description: "Kamala Harris was one of the commencement speakers at St. Paul Central High School’s graduation ceremony, encouraging the graduating students to stay civically engaged.",
-                image: "https://i.ibb.co/Fq4w9bsP/Captura-de-pantalla-2026-06-04-094951.png",
-                coverageLink: "https://x.com/kamala_things/status/2062349534160621918",
-                coverageLabel: "Watch Full Remarks",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            }, 
-            {
-                date: "May 13, 2026 - Online",
-                title: "Organizing Calls with Win With Black Women and Emerge's Leaders Matter",
-                description: "Kamala Harris discussed the implications of the recent Supreme Court decision narrowing the Voting Rights Act during two organizing calls. One with Win With Black Women and another one with Leaders Matter.",
-                image: "https://i.ibb.co/KctXPW11/Captura-de-pantalla-2026-05-25-235023.png",
-                coverageLink: "https://sites.google.com/view/harristracker/home/may-13-2026",
-                coverageLabel: "Watch Full Remarks",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
+                date: "May 6, 2025",
+                category: ["Speech", "Rally/Fundraiser"],
+                title: "Address at the 2025 International Women's Day event",
+                description: "Keynote address focused on global economic empowerment and leadership opportunities.",
+                location: "Los Angeles, CA",
+                link: "",
+                linkText: "",
+                image: false
             },
             {
-                date: "May 7, 2026 - Las Vegas, Nevada",
-                title: "Fireside Chat hosted by Nevada Democrats and visit to Culinary Union HQ",
-                description: "She atended a fundraiser for Aaron D. Ford's gubernatorial campaign, stopped by the Culinary Union HQ to share brief remarks to union members, and spoke at an event hosted by Nevada Dems, addressing the current direction of national economic shifts and foreign relations frameworks.",
-                image: "https://i.ibb.co/mrYv49bL/702231542-1433141482188015-1507385124171568817-n.jpg",
-                coverageLink: "https://sites.google.com/view/harristracker/home/may-7-2026",
-                coverageLabel: "Read Coverage",  // <-- Custom label for Button 1
-                videoLink: "https://x.com/imjenell/status/2052569659963019395",
-                videoLabel: "Watch Full Fireside Chat"        // <-- Custom label for Button 2
+                date: "Feb 12, 2025",
+                category: ["Book Tour", "Fireside Chat"],
+                title: "Conversation at the 2025 Leading Women Defined Summit",
+                description: "Moderated discussion covering public service, governance, and leadership paradigms.",
+                location: "New York, NY",
+                link: "",
+                linkText: "",
+                image: false
             },
             {
-                date: "May 3, 2026 - Beverly Hills, California",
-                title: "Power100 Honoree Dinner",
-                description: "She participated in a fireside chat with Kourtney Gibson, CEO of Retirement Solutions at TIAA, and Jacob Walthour, CEO of Blueprint Capital Advisors LLC and Power100 founder.",
-                image: "https://image.cnbcfm.com/api/v1/image/108301896-1777927622106-gettyimages-2274378971-ata_0495_xjglydkq.jpeg",
-                coverageLink: "https://www.cnbc.com/2026/05/05/dei-diversity-milken-blueprint-capital-power100.html",
-                coverageLabel: "Read Coverage",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            },
-            {
-                date: "May 1, 2026 - Miami, Florida",
-                title: "EXCELERATEHer Leadership Summit",
-                description: "Kamala Harris joined Kim Blackwell for a conversation centered on leadership, resilience, and creating opportunities for the next generation of women leaders. Her appearance emphasized empowerment, public service, and the importance of leading boldly across business, politics, and culture.",
-                image: "https://i.ibb.co/7dxjcKBJ/682668025-17959271259119800-7571299483972097772-n-1.jpg",
-                coverageLink: "https://www.blacktherapytoday.com/a-look-inside-excelerate-her-2026-where-black-women-leaders-talk-wellness-and-wealth/",
-                coverageLabel: "Read Coverage",  // <-- Custom label for Button 1
-                videoLink: "https://x.com/archivekamala/status/2052520286541508706?s=20",
-                videoLabel: "Watch Recap Video"        // <-- Custom label for Button 2
-            },
-            {
-                date: "April 29, 2026 - Beverly Hills, California",
-                title: "Public Counsel Awards Dinner",
-                description: "Kamala Harris joined actress Uzo Aduba at a Public Counsel event focused on expanding access to legal aid and protecting vulnerable communities. The conversation included Harris calling the Trump administration ‘Corrupt, Incompetent’ and ‘Callous’.",
-                image: "https://i.ibb.co/KcKD18Gx/toolxox-com-free-ai-tools-2k-na4gb-Ks-EI1.jpg",
-                coverageLink: "https://variety.com/2026/politics/news/kamala-harris-trump-administration-corrupt-incompetent-callous-public-counsel-1236734506/",
-                coverageLabel: "Read Coverage",  // <-- Custom label for Button 1
-                videoLink: "https://x.com/imjenell/status/2049990754819301605",
-                videoLabel: "Watch Short Clip"        // <-- Custom label for Button 2
-            },
-            {
-                date: "April 25, 2026 - Little Rock, Arkansas",
-                title: "Keynote Address: Fisher Shackelford Dinner",
-                description: "Traveled to Little Rock, Arkansas to address state Democrats during their Fisher Shackelford Dinner. Before the dinner, she stopped by the historic Little Rock Central High School to meet with civil rights landmark figure Elizabeth Eckford.",
-                image: "https://wehco.media.clients.ellingtoncms.com/img/photos/2026/04/25/0425Harris1255_crop_t842.jpg?e5ab187fd9b46f2971cc9cd0025dffa4a96399a8", 
-                coverageLink: "https://archive.is/20260426193003/https://www.arkansasonline.com/news/2026/apr/25/harris-visits-little-rock-voices-opposition-to/",
-                coverageLabel: "Read Coverage",                        // <-- Left blank, defaults to fallback
-                videoLink: "https://www.youtube.com/watch?v=2FR6SV_01S4",
-                videoLabel: "Watch Full Remarks"         // <-- Custom label for Button 2
-            },
-            {
-                date: "April 19, 2026 - Chicago, Illinois",
-                title: "Power Rising 2026",
-                description: "Kamala Harris joined Black women leaders, activists, and organizers for a conversation focused on the importance of coalition-building, civic engagement, and amplifying the voices of Black women in shaping the country’s future.",
-                image: "https://i.ibb.co/20QcHn18/HGTE-56-Ww-AAqo-FG.jpg",
-                coverageLink: "https://archive.is/20260420121404/https://chicago.suntimes.com/politics/2026/04/19/kamala-harris-chicago-trump-made-america-weaker",
-                coverageLabel: "Read Coverage",  // <-- Custom label for Button 1
-                videoLink: "https://www.youtube.com/watch?si=lbd98I9vbTmlNS8N&v=krMl1ArvkDc",
-                videoLabel: "Watch Full Conversation"        // <-- Custom label for Button 2
-            },
-            {
-                date: "April 18, 2026 - Detroit, Michigan",
-                title: "38th Annual Michigan Democratic Women's Caucus Legacy Luncheon",
-                description: "Kamala Harris spoke with Michigan State Senator Sarah Anthony at the 38th Annual Michigan Democratic Women's Caucus Legacy Luncheon in Detroit. Before leaving the stage, Harris took photos with Rollins, Anthony and a bunch of excited children.",
-                image: "https://assets.newsweek.com/wp-content/uploads/2026/04/GettyImages-2271399732.jpg",
-                coverageLink: "https://x.com/imjenell/status/2045570904390783467?s=20",
-                coverageLabel: "Wacth Full Remarks",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            },
-            {
-                date: "April 17, 2026 - Savannah, Georgia",
-                title: "Final stop of the '107 Days' Book Tour",
-                description: "Stopped by The Grove to address civic leaders at a private event before her final book tour stop that was moderated by chef Mashama Bailey, where Harris reflected on her 2024 presidential campaign, discussed the 2026 midterms, foreign policy, and the future of the Democratic Party.",
-                image: "https://i.ibb.co/Sw552r0T/HGJnca-KX0-AArz-GP.jpg",
-                coverageLink: "",
-                coverageLabel: "",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            },
-            {
-                date: "PLACE",
-                title: "PLACE",
-                description: "PLACE",
-                image: "",
-                coverageLink: "",
-                coverageLabel: "",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            },
-            {
-                date: "PLACE",
-                title: "PLACE",
-                description: "PLACE",
-                image: "",
-                coverageLink: "",
-                coverageLabel: "",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
-            },
-            {
-                date: "PLACE",
-                title: "PLACE",
-                description: "PLACE",
-                image: "",
-                coverageLink: "",
-                coverageLabel: "",  // <-- Custom label for Button 1
-                videoLink: "",
-                videoLabel: ""        // <-- Custom label for Button 2
+                date: "Jan 20, 2025",
+                category: ["Other"],
+                title: "Departure from the Vice Presidency",
+                description: "Final transition and official public departure following her term.",
+                location: "Washington, DC",
+                link: "",
+                linkText: "",
+                image: "https://i.ibb.co/FqBvRVtL/Dise-o-sin-t-tulo.png",
             }
         ];
 
-        // VIEW ENGINE SWITCHING FUNCTION
-        function setView(viewType) {
-            const wrapper = document.getElementById('event-display-wrapper');
-            const gridBtn = document.getElementById('grid-view-btn');
-            const listBtn = document.getElementById('list-view-btn');
-
-            if (viewType === 'grid') {
-                wrapper.className = 'layout-grid';
-                gridBtn.classList.add('active');
-                listBtn.classList.remove('active');
-            } else {
-                wrapper.className = 'layout-list';
-                listBtn.classList.add('active');
-                gridBtn.classList.remove('active');
+        function render(items) {
+            const container = document.getElementById('events-container');
+            container.innerHTML = items.map(item => {
+                const categories = Array.isArray(item.category) ? item.category : [item.category];
+                
+                return `
+                    <div class="event-item">
+                        <div class="event-date">${item.date}</div>
+                        <div class="event-card">
+                            <div class="event-img">
+                                ${item.image ? `<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;">` : 'picture box'}
+                            </div>
+                            <div>
+                                <div class="event-tags">
+                                    ${categories.map(cat => `<span class="event-tag">${cat}</span>`).join('')}
+                                </div>
+                                <h3>${item.title}</h3>
+                                <p>${item.description}</p>
+                                <div class="event-footer">
+                                    <div class="event-location">📍 ${item.location}</div>
+                                    ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="event-link">${item.linkText || 'View Source ↗'}</a>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('stat-total').innerText = eventsData.length;
+            if (eventsData.length > 0) {
+                document.getElementById('stat-last').innerText = eventsData[0].date;
             }
         }
 
-        // ELEMENT RENDER COMPONENT
-        function renderEvents() {
-            const container = document.getElementById('event-display-wrapper');
-            container.innerHTML = ''; 
-
-            eventsData.forEach(event => {
-                const card = document.createElement('div');
-                card.className = 'card';
-
-                // Evaluate Image Space Allocation
-                let imgHtml = '';
-                if (event.image && event.image.trim() !== '') {
-                    imgHtml = `<img src="${event.image}" alt="${event.title}" class="card-img">`;
-                }
-
-                // Check Button Availability and Custom Strings
-                let buttonsHtml = '';
-                if (event.coverageLink) {
-                    const cLabel = event.coverageLabel && event.coverageLabel.trim() !== '' ? event.coverageLabel : "Read Coverage";
-                    buttonsHtml += `<a href="${event.coverageLink}" target="_blank" class="btn btn-primary">${cLabel}</a>`;
-                }
-                if (event.videoLink) {
-                    const vLabel = event.videoLabel && event.videoLabel.trim() !== '' ? event.videoLabel : "Watch Video";
-                    buttonsHtml += `<a href="${event.videoLink}" target="_blank" class="btn btn-secondary">${vLabel}</a>`;
-                }
-
-                card.innerHTML = `
-                    ${imgHtml}
-                    <div class="card-content">
-                        <div class="card-date">${event.date}</div>
-                        <h2 class="card-title">${event.title}</h2>
-                        <p class="card-desc">${event.description}</p>
-                        ${buttonsHtml ? `<div class="card-links">${buttonsHtml}</div>` : ''}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+        function filterEvents(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'all') {
+                render(eventsData);
+            } else {
+                render(eventsData.filter(e => {
+                    const categories = Array.isArray(e.category) ? e.category : [e.category];
+                    return categories.includes(type);
+                }));
+            }
         }
 
-        // Boot system scripts on load completion
-        document.addEventListener('DOMContentLoaded', () => {
-            renderEvents();
-            setView('list'); // Default view setting on startup
-        });
+        render(eventsData);
     </script>
 </body>
 </html>
