@@ -175,7 +175,26 @@
             letter-spacing: 0.05em;
             overflow: hidden;
         }
-        
+
+        /* Crisp image rendering defaults (no blur on mobile) */
+        .event-img picture,
+        .event-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        /* Desktop-only softening */
+        @media (min-width: 769px) {
+            .event-img picture,
+            .event-img img {
+                image-rendering: smooth;
+                filter: blur(0.3px);
+            }
+        }
+
         /* TAGS CONTAINER & STYLING */
         .event-tags {
             display: flex;
@@ -239,6 +258,43 @@
             color: var(--accent-gold);
         }
 
+        /* PAGINATION CONTROLS */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            font-family: var(--font-sans);
+        }
+
+        .page-btn {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 0.5rem;
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn.active, .page-btn:hover:not(:disabled) {
+            background-color: #2D3748;
+            color: #ffffff;
+            border-color: #2D3748;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         /* FOOTER */
         footer {
             padding: 4rem 8%;
@@ -273,7 +329,6 @@
                 padding: 0 5% 3rem 5%;
             }
 
-            /* Enable horizontal scroll on filter buttons */
             .filters {
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -283,10 +338,9 @@
             }
 
             .filters::-webkit-scrollbar {
-                display: none; /* Hide scrollbar for clean UI */
+                display: none;
             }
 
-            /* Stack dates on top of event cards */
             .event-item {
                 grid-template-columns: 1fr;
                 gap: 0.5rem;
@@ -299,7 +353,6 @@
                 font-weight: 600;
             }
 
-            /* Stack event images on top of card text */
             .event-card {
                 grid-template-columns: 1fr;
                 gap: 1rem;
@@ -347,18 +400,22 @@
 
     <main class="content-area">
         <div class="filters">
-            <button class="filter-btn active" onclick="filterEvents('all')">All types</button>
-            <button class="filter-btn" onclick="filterEvents('Interview/Podcast')">Interview/Podcast</button>
-            <button class="filter-btn" onclick="filterEvents('Fireside Chat')">Fireside Chat</button>
-            <button class="filter-btn" onclick="filterEvents('Rally/Fundraiser')">Rally/Fundraiser</button>
-            <button class="filter-btn" onclick="filterEvents('Book Tour')">Book Tour</button>
-            <button class="filter-btn" onclick="filterEvents('Speech')">Speech</button>
-            <button class="filter-btn" onclick="filterEvents('Informal Visits')">Informal Visits</button>
-            <button class="filter-btn" onclick="filterEvents('Other')">Other</button>
+            <button class="filter-btn active" onclick="filterEvents('all', this)">All types</button>
+            <button class="filter-btn" onclick="filterEvents('Interview/Podcast', this)">Interview/Podcast</button>
+            <button class="filter-btn" onclick="filterEvents('Fireside Chat', this)">Fireside Chat</button>
+            <button class="filter-btn" onclick="filterEvents('Rally/Fundraiser', this)">Rally/Fundraiser</button>
+            <button class="filter-btn" onclick="filterEvents('Book Tour', this)">Book Tour</button>
+            <button class="filter-btn" onclick="filterEvents('Speech', this)">Speech</button>
+            <button class="filter-btn" onclick="filterEvents('Informal Visits', this)">Informal Visits</button>
+            <button class="filter-btn" onclick="filterEvents('Other', this)">Other</button>
         </div>
 
         <div id="events-container">
             <!-- Events injected dynamically by JS -->
+        </div>
+
+        <div class="pagination" id="pagination-container">
+            <!-- Pagination buttons injected dynamically by JS -->
         </div>
     </main>
 
@@ -377,7 +434,8 @@
                 location: "Online",
                 link: "https://www.youtube.com/watch?v=R6CNzUfVAmY", 
                 linkText: "Watch ↗",
-                image: "https://i.ibb.co/99F89HjB/Desktop-Crispness-7.jpg",
+                imageMobile: "https://i.ibb.co/99F89HjB/Desktop-Crispness-7.jpg",
+                imageDesktop: "https://i.ibb.co/99F89HjB/Desktop-Crispness-7.jpg"
             },
             {
                 date: "Aug 12, 2026",
@@ -387,7 +445,8 @@
                 location: "Online",
                 link: "https://x.com/archivekamala/status/2087674961901002967", 
                 linkText: "Source ↗",
-                image: "https://i.ibb.co/4ZxCf80G/Desktop-Crispness-5.jpg",
+                imageMobile: "https://i.ibb.co/4ZxCf80G/Desktop-Crispness-5.jpg",
+                imageDesktop: "https://i.ibb.co/1GKLy6FL/Dise-o-sin-t-tulo.png"
             },
             {
                 date: "Aug 8, 2026",
@@ -397,7 +456,8 @@
                 location: "Los Angeles, CA",
                 link: "https://www.facebook.com/YoungElectedOfficials/posts/what-a-moment-for-the-young-elected-officials-network-thank-you-vice-president-k/1492922029532279/",
                 linkText: "Source ↗",
-                image: "https://i.ibb.co/p6JQrh3R/Desktop-Crispness-8.jpg",
+                imageMobile: "https://i.ibb.co/p6JQrh3R/Desktop-Crispness-8.jpg",
+                imageDesktop: "https://i.ibb.co/C57WTyVY/Dise-o-sin-t-tulo-3.png"
             },
             {
                 date: "Aug 7, 2026",
@@ -407,7 +467,8 @@
                 location: "New Orleans, LA",
                 link: "https://www.youtube.com/watch?v=Eu9Ms8D-L34",
                 linkText: "Watch Speech ↗",
-                image: "https://i.ibb.co/Dg12TjKk/Dise-o-sin-t-tulo-33.png",
+                imageMobile: "https://i.ibb.co/Dg12TjKk/Dise-o-sin-t-tulo-33.png",
+                imageDesktop: "https://i.ibb.co/RT8R1tJM/Dise-o-sin-t-tulo-2.png"
             },
             {
                 date: "Aug 7, 2026",
@@ -417,7 +478,8 @@
                 location: "New Orleans, LA",
                 link: "https://www.wwno.org/education/2026-08-07/new-orleans-students-get-advice-from-kamala-harris-at-back-to-school-rally",
                 linkText: "Source ↗",
-                image: "https://i.ibb.co/twrSQWLd/Desktop-Crispness-10.jpg",
+                imageMobile: "https://i.ibb.co/twrSQWLd/Desktop-Crispness-10.jpg",
+                imageDesktop: "https://i.ibb.co/v4kNtjTv/Dise-o-sin-t-tulo-1.png"
             },
             {
                 date: "July 31, 2026",
@@ -427,7 +489,8 @@
                 location: "Nashville, TN",
                 link: "https://www.youtube.com/watch?v=-ghm6Q9RZrs",
                 linkText: "Watch Full Remarks ↗",
-                image: "https://i.ibb.co/ds9C9jrJ/Desktop-Crispness-2.jpg",
+                imageMobile: "https://i.ibb.co/ds9C9jrJ/Desktop-Crispness-2.jpg",
+                imageDesktop: "https://i.ibb.co/N6QxQ1GF/Dise-o-sin-t-tulo-20.png"
             },
             {
                 date: "July 30, 2026",
@@ -437,7 +500,8 @@
                 location: "Nashville, TN",
                 link: "https://www.yahoo.com/news/politics/articles/kamala-harris-calls-dc-puerto-131018902.html",
                 linkText: "Read Coverage ↗",
-                image: "https://i.ibb.co/JRxJ5mmN/Desktop-Crispness-12.jpg"
+                imageMobile: "https://i.ibb.co/JRxJ5mmN/Desktop-Crispness-12.jpg",
+                imageDesktop: "https://i.ibb.co/9kJyjH6J/Dise-o-sin-t-tulo-21.png"
             },
             {
                 date: "July 18, 2026",
@@ -447,7 +511,8 @@
                 location: "Los Angeles, CA",
                 link: "https://www.facebook.com/sam.azurel/posts/kamala-harris-inspires-aapi-leaders-with-a-powerful-message-of-heritage-leadersh/4595534090680570/",
                 linkText: "Read Coverage ↗",
-                image: "https://i.ibb.co/3y3pXrz2/Dise-o-sin-t-tulo-22.png",
+                imageMobile: "https://i.ibb.co/twbw6vk4/Desktop-Crispness-15.jpg",
+                imageDesktop: "https://i.ibb.co/3y3pXrz2/Dise-o-sin-t-tulo-22.png"
             },
             {
                 date: "July 10, 2026",
@@ -457,7 +522,8 @@
                 location: "Los Angeles, CA",
                 link: "https://sports.yahoo.com/articles/kamala-harris-shares-she-admires-095343019.html",
                 linkText: "Read Coverage ↗",
-                image: "https://i.ibb.co/XxzNdjfF/Dise-o-sin-t-tulo-23.png"
+                imageMobile: "https://i.ibb.co/kVRGjm9m/Desktop-Crispness-13.jpg",
+                imageDesktop: "https://i.ibb.co/XxzNdjfF/Dise-o-sin-t-tulo-23.png"
             },
             {
                 date: "July 4, 2026",
@@ -467,7 +533,8 @@
                 location: "Malibu, CA",
                 link: "https://www.instagram.com/p/DaYtm2Tjw4y/?img_index=1",
                 linkText: "Source ↗",
-                image: "https://i.ibb.co/rRM7ZRNC/Dise-o-sin-t-tulo-24.png"
+                imageMobile: "https://i.ibb.co/5gjBxZ9J/Desktop-Crispness-17.jpg",
+                imageDesktop: "https://i.ibb.co/rRM7ZRNC/Dise-o-sin-t-tulo-24.png"
             },
             {
                 date: "June 25, 2026",
@@ -477,7 +544,8 @@
                 location: "Los Angeles, CA",
                 link: "https://www.instagram.com/p/DaCRdZ9jWIJ",
                 linkText: "Source ↗",
-                image: "https://i.ibb.co/b5HV50YS/Dise-o-sin-t-tulo-25.png"
+                imageMobile: "https://i.ibb.co/dwW9G8XC/Desktop-Crispness.jpg",
+                imageDesktop: "https://i.ibb.co/b5HV50YS/Dise-o-sin-t-tulo-25.png"
             },
             {
                 date: "June 24, 2026",
@@ -711,55 +779,138 @@
             }
         ];
 
-        function render(items) {
+        // Pagination State
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let currentFilteredData = [...eventsData];
+
+        function render() {
             const container = document.getElementById('events-container');
-            container.innerHTML = items.map(item => {
-                const categories = Array.isArray(item.category) ? item.category : [item.category];
-                
-                return `
-                    <div class="event-item">
-                        <div class="event-date">${item.date}</div>
-                        <div class="event-card">
-                            <div class="event-img">
-                                ${item.image ? `<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;">` : 'picture box'}
-                            </div>
-                            <div>
-                                <div class="event-tags">
-                                    ${categories.map(cat => `<span class="event-tag">${cat}</span>`).join('')}
+            
+            // Calculate page slice
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = currentFilteredData.slice(startIndex, endIndex);
+
+            if (paginatedItems.length === 0) {
+                container.innerHTML = `<p style="text-align: center; font-family: var(--font-sans); color: var(--text-muted); padding: 2rem 0;">No events found.</p>`;
+            } else {
+                container.innerHTML = paginatedItems.map(item => {
+                    const categories = Array.isArray(item.category) ? item.category : [item.category];
+                    
+                    let imageHTML = '';
+                    if (item.imageMobile || item.imageDesktop) {
+                        const mobileUrl = item.imageMobile || item.image || item.imageDesktop;
+                        const desktopUrl = item.imageDesktop || item.image || item.imageMobile;
+                        
+                        imageHTML = `
+                            <picture>
+                                <source media="(max-width: 768px)" srcset="${mobileUrl}">
+                                <source media="(min-width: 769px)" srcset="${desktopUrl}">
+                                <img src="${desktopUrl}" alt="${item.title}">
+                            </picture>
+                        `;
+                    } else if (item.image) {
+                        imageHTML = `<img src="${item.image}" alt="${item.title}">`;
+                    }
+
+                    return `
+                        <div class="event-item">
+                            <div class="event-date">${item.date}</div>
+                            <div class="event-card">
+                                <div class="event-img">
+                                    ${imageHTML}
                                 </div>
-                                <h3>${item.title}</h3>
-                                <p>${item.description}</p>
-                                <div class="event-footer">
-                                    <div class="event-location">📍 ${item.location}</div>
-                                    ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="event-link">${item.linkText || 'View Source ↗'}</a>` : ''}
+                                <div>
+                                    <div class="event-tags">
+                                        ${categories.map(cat => `<span class="event-tag">${cat}</span>`).join('')}
+                                    </div>
+                                    <h3>${item.title}</h3>
+                                    <p>${item.description}</p>
+                                    <div class="event-footer">
+                                        <div class="event-location">📍 ${item.location}</div>
+                                        ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="event-link">${item.linkText || 'View Source ↗'}</a>` : ''}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
-            
+                    `;
+                }).join('');
+            }
+
+            // Update stats
             document.getElementById('stat-total').innerText = eventsData.length;
             if (eventsData.length > 0) {
                 document.getElementById('stat-last').innerText = eventsData[0].date;
             }
+
+            renderPagination();
         }
 
-        function filterEvents(type) {
+        function renderPagination() {
+            const paginationContainer = document.getElementById('pagination-container');
+            const totalPages = Math.ceil(currentFilteredData.length / itemsPerPage);
+
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let buttons = '';
+
+            // Previous Button
+            buttons += `
+                <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goToPage(${currentPage - 1})">
+                    &laquo;
+                </button>
+            `;
+
+            // Numbered Buttons
+            for (let i = 1; i <= totalPages; i++) {
+                buttons += `
+                    <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+
+            // Next Button
+            buttons += `
+                <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goToPage(${currentPage + 1})">
+                    &raquo;
+                </button>
+            `;
+
+            paginationContainer.innerHTML = buttons;
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            render();
+            // Scroll smoothly back to top of events list when changing pages
+            document.querySelector('.filters').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterEvents(type, btnElement) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
             
             if (type === 'all') {
-                render(eventsData);
+                currentFilteredData = [...eventsData];
             } else {
-                render(eventsData.filter(e => {
+                currentFilteredData = eventsData.filter(e => {
                     const categories = Array.isArray(e.category) ? e.category : [e.category];
                     return categories.includes(type);
-                }));
+                });
             }
+
+            currentPage = 1;
+            render();
         }
 
-        render(eventsData);
+        render();
     </script>
 </body>
 </html>
